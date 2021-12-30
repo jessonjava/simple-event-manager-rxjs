@@ -8,7 +8,7 @@ const eventEmitter$ = fromEvent(document.getElementById('emit'), 'click');
 const unsub$ = fromEvent(document.getElementById('unsub'), 'click');
 const unreg$ = fromEvent(document.getElementById('unreg'), 'click');
 
-// register an event with a name and default value
+// register an event with a name and initial state
 SimpleEventManager.register<number>('button-click', 0);
 
 eventEmitter$.subscribe(() => {
