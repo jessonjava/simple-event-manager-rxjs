@@ -1,4 +1,4 @@
-import { BehaviorSubject } from 'rxjs';
+import { BehaviorSubject, Observer } from 'rxjs';
 
 interface RegisteredEvent {
   eventName: string;
@@ -27,14 +27,14 @@ export default class SimpleEventManager {
 
 export const emit = (
   eventName: string,
-  updatedValueCallback: (value: any) => any
+  updateStateAction: (value: any) => any
 ) => {
   const event = SimpleEventManager.getEventFromEventName(eventName);
   if (!event) {
     console.warn(`No event called ${eventName} registered`);
     return;
   }
-  const nextValue = updatedValueCallback(event.subject.getValue());
+  const nextValue = updateStateAction(event.subject.getValue());
   event.subject.next(nextValue);
 };
 
@@ -60,11 +60,14 @@ export const unregister = (eventName: string) => {
     );
 };
 
-export const when = (eventName: string, callback: (next: any) => any) => {
+export const when = (
+  eventName: string,
+  oberserverActions: Observer<any> | Partial<(any) => any>
+) => {
   const event = SimpleEventManager.getEventFromEventName(eventName);
   if (!event) {
     console.warn(`No event called ${eventName} registered`);
     return;
   }
-  return event.subject.subscribe(callback);
+  return event.subject.subscribe(oberserverActions);
 };
