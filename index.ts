@@ -12,12 +12,13 @@ const unreg$ = fromEvent(document.getElementById('unreg'), 'click');
 register('button-click', 0);
 
 eventEmitter$.subscribe(() => {
+  // emit a registered event, the callback's return value will be the new state value(for the event).
   emit('button-click', (currentVal) => {
     return currentVal + 10;
   });
 });
 
-// listen for events with a specific name
+// listen for events with a specific name, the value of the event's state is provided in the callback.
 const subscription = when('button-click', (val) => {
   console.log(val);
 });
